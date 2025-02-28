@@ -1,31 +1,55 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+package com.example.validationapp;
 
-    <EditText
-        android:id="@+id/emailid"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter College Email id..."
-        android:inputType="text" />
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
 
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Enter password...."
-        android:inputType="text" />
+public class MainActivity extends AppCompatActivity {
 
-    <Button
-        android:id="@+id/validatebtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Validate" />
-</LinearLayout>
+    private EditText editTextUsername, editTextID;
+    private Button buttonValidate;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        editTextUsername = findViewById(R.id.editTextUsername);
+        editTextID = findViewById(R.id.editTextID);
+        buttonValidate = findViewById(R.id.buttonValidate);
+
+        buttonValidate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateInput();
+            }
+        });
+    }
+
+    private void validateInput() {
+        String username = editTextUsername.getText().toString().trim();
+        String userID = editTextID.getText().toString().trim();
+
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(userID)) {
+            Toast.makeText(this, "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!username.matches("[a-zA-Z]+")) {
+            Toast.makeText(this, "Username must contain only alphabets", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!userID.matches("\\d{4}")) {
+            Toast.makeText(this, "ID must be a 4-digit number", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, "Validation Successful!", Toast.LENGTH_SHORT).show();
+    }
+}
+
